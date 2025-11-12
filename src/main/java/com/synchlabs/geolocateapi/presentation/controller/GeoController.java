@@ -1,8 +1,8 @@
-package com.synchlabs.geolocateapiI.presentation.controller;
+package com.synchlabs.geolocateapi.presentation.controller;
 
 
-import com.synchlabs.geolocateapiI.application.dto.GeoLocationResponse;
-import com.synchlabs.geolocateapiI.application.service.GeoService;
+import com.synchlabs.geolocateapi.application.dto.GeoLocationResponse;
+import com.synchlabs.geolocateapi.application.service.GeoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

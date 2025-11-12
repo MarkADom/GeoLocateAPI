@@ -1,4 +1,4 @@
-package com.synchlabs.geolocateapiI;
+package com.synchlabs.geolocateapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

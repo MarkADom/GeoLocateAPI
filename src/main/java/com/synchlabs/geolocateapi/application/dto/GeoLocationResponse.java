@@ -1,4 +1,4 @@
-package com.synchlabs.geolocateapiI.application.dto;
+package com.synchlabs.geolocateapi.application.dto;
 
 import lombok.Builder;
 import lombok.Data;

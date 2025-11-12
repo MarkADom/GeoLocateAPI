@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.implementation
+
 plugins {
 	java
 	id("org.springframework.boot") version "3.3.4"
@@ -27,15 +29,18 @@ repositories {
 dependencies {
     // Core Spring
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation ("org.springframework:spring-webflux")
 
     // Utils & Dev
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 
+    // Swagger / OpenAPI
+    implementation("io.swagger.core.v3:swagger-annotations-jakarta:2.2.21")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
 
     // Tests
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

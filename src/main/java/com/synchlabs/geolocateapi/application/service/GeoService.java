@@ -1,24 +1,23 @@
-package com.synchlabs.geolocateapiI.application.service;
+package com.synchlabs.geolocateapi.application.service;
 
-import com.synchlabs.geolocateapiI.application.dto.GeoLocationResponse;
-import org.springframework.beans.factory.annotation.Value;
+import com.synchlabs.geolocateapi.application.dto.GeoLocationResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
-
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 
 @Service
 @Slf4j
 public class GeoService {
 
-    private final WebClient webClient;
+    private final RestClient restClient;
 
     @Value("${external.geo.base-url}")
     private String baseUrl;
 
-    public GeoService(WebClient.Builder builder) {
-        this.webClient = builder.build();
+    public GeoService() {
+        this.restClient = RestClient.create();
     }
 
     public GeoLocationResponse getLocation(String ip) {
@@ -26,11 +25,10 @@ public class GeoService {
         log.info("Fetching location for IP: {}", ip);
 
         try {
-            var response = webClient.get()
+            var response = restClient.get()
                     .uri(url)
                     .retrieve()
-                    .bodyToMono(MapResponse.class)
-                    .block();
+                    .body(IpApiResponse.class);
 
             if (response == null) {
                 throw new IllegalStateException("Empty response from external API");
@@ -48,13 +46,13 @@ public class GeoService {
                     .cached(false)
                     .build();
 
-        } catch (WebClientResponseException e) {
-            log.error("Error form external API: {}", e.getResponseBodyAsString());
+        } catch (RestClientException e) {
+            log.error("Error calling external API: {}", e.getMessage());
             throw new RuntimeException("External API error", e);
         }
     }
 
-    private record MapResponse(
+    private record IpApiResponse(
             String city,
             String region,
             String country_name,
