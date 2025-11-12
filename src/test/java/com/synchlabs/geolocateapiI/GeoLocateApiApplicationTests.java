@@ -1,4 +1,4 @@
-package com.synchlabs.GeoLocateAPI;
+package com.synchlabs.geolocateapiI;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

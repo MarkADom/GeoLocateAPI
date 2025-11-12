@@ -10,6 +10,10 @@ spring:
   main:
     banner-mode: "off"
 
+  output:
+    ansi:
+      enabled: always
+
 logging:
   level:
     root: INFO
