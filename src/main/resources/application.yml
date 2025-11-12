@@ -1,0 +1,25 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+
+spring:
+  application:
+    name: GeoLocateAPI
+
+  main:
+    banner-mode: "off"
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    com.synchlabs.GeoLocateAPI: DEBUG
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr([%thread]){magenta} %clr(%-5level){blue} %clr(%logger{36}){cyan} - %clr(%msg){faint}%n"
+
+external:
+  geo:
+    provider: ipapi
+    base-url: https://ipapi.co
+    timeout-ms: 3000
