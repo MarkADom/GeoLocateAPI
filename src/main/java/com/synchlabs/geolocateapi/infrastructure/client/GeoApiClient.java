@@ -7,7 +7,9 @@ import com.synchlabs.geolocateapi.infrastructure.client.dto.IpApiResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class GeoApiClient implements GeoProviderPort {
 
@@ -25,14 +27,35 @@ public class GeoApiClient implements GeoProviderPort {
     }
 
     @Override
-    public GeoLocationData findByIp(String ip)  {
+    public GeoLocationData findByIp(String ip) {
+
+        long start = System.currentTimeMillis();
         String url = baseUrl + "/json/" + ip;
 
-        IpApiResponse response = restTemplate.getForObject(url, IpApiResponse.class);
+        log.info("Calling {} provider for IP {}", provider, ip);
 
-        if (response == null || !"success".equalsIgnoreCase(response.getStatus())) {
+        IpApiResponse response;
+
+        try {
+            response = restTemplate.getForObject(url, IpApiResponse.class);
+        } catch (Exception ex) {
+            log.error("Provider {} failed for IP {}: {}", provider, ip, ex.getMessage());
             throw new ExternalServiceException("Failed to fetch geolocation for IP: " + ip);
         }
+
+        long duration = System.currentTimeMillis() - start;
+
+        if (duration > 500) {
+            log.warn("Provider {} took {} ms for IP {}", provider, duration, ip);
+        } else {
+            log.info("Provide {} responded in {} ms for IP {}", provider, duration, ip);
+        }
+
+        if (response == null || !"success".equalsIgnoreCase(response.getStatus())) {
+            log.error("Invalid provider response for IP {}: {}", provider, ip);
+            throw new ExternalServiceException("Failed to fetch geolocation for IP: " + ip);
+        }
+
         return new GeoLocationData(
                 response.getLat(),
                 response.getLon(),
@@ -42,7 +65,7 @@ public class GeoApiClient implements GeoProviderPort {
                 response.getTimezone(),
                 response.getIsp(),
                 response.getQuery(),    // ip
-                "ip-api.com"            // source
+                provider         // source
         );
     }
 
