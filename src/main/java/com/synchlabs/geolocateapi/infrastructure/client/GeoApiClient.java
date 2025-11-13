@@ -1,5 +1,6 @@
 package com.synchlabs.geolocateapi.infrastructure.client;
 
+import com.synchlabs.geolocateapi.application.exception.ExternalServiceException;
 import com.synchlabs.geolocateapi.application.port.out.GeoProviderPort;
 import com.synchlabs.geolocateapi.domain.model.GeoLocationData;
 import com.synchlabs.geolocateapi.infrastructure.client.dto.IpApiResponse;
@@ -30,7 +31,7 @@ public class GeoApiClient implements GeoProviderPort {
         IpApiResponse response = restTemplate.getForObject(url, IpApiResponse.class);
 
         if (response == null || !"success".equalsIgnoreCase(response.getStatus())) {
-            throw new RuntimeException("Failed to fetch geolocation for IP: " + ip);
+            throw new ExternalServiceException("Failed to fetch geolocation for IP: " + ip);
         }
         return new GeoLocationData(
                 response.getLat(),
