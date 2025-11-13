@@ -25,5 +25,5 @@ logging:
 external:
   geo:
     provider: ipapi
-    base-url: https://ipapi.co
+    base-url: http://ip-api.com
     timeout-ms: 3000

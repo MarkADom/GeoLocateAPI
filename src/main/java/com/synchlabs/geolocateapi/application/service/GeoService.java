@@ -1,13 +1,9 @@
 package com.synchlabs.geolocateapi.application.service;
 
-import com.synchlabs.geolocateapi.application.dto.GeoLocationResponse;
 import com.synchlabs.geolocateapi.application.port.in.GeoQueryUseCase;
 import com.synchlabs.geolocateapi.application.port.out.GeoProviderPort;
 import com.synchlabs.geolocateapi.domain.model.GeoLocationData;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
-import org.springframework.web.client.RestClientException;
 
 @Service
 public class GeoService implements GeoQueryUseCase {

@@ -3,6 +3,7 @@ package com.synchlabs.geolocateapi.infrastructure.client;
 import com.synchlabs.geolocateapi.application.port.out.GeoProviderPort;
 import com.synchlabs.geolocateapi.domain.model.GeoLocationData;
 import com.synchlabs.geolocateapi.infrastructure.client.dto.IpApiResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -11,13 +12,20 @@ public class GeoApiClient implements GeoProviderPort {
 
     private final RestTemplate restTemplate;
 
+    @Value("${external.geo.base-url}")
+    private String baseUrl;
+
+    @Value("${external.geo.provider}")
+    private String provider;
+
+
     public GeoApiClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
     @Override
     public GeoLocationData findByIp(String ip)  {
-        String url = "http://ip-api.com/json/" + ip;
+        String url = baseUrl + "/json/" + ip;
 
         IpApiResponse response = restTemplate.getForObject(url, IpApiResponse.class);
 
