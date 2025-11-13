@@ -1,26 +1,38 @@
 package com.synchlabs.geolocateapi.presentation.controller;
 
-
 import com.synchlabs.geolocateapi.application.dto.GeoLocationResponse;
-import com.synchlabs.geolocateapi.application.service.GeoService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.synchlabs.geolocateapi.application.port.in.GeoQueryUseCase;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/geo")
-@RequiredArgsConstructor
-@Slf4j
+@RequestMapping("/api/v1/geo")
 public class GeoController {
 
-    private final GeoService geoService;
+    private final GeoQueryUseCase geoUseCase;
 
-    @GetMapping("/{ip}")
-    public GeoLocationResponse getByIp(@PathVariable String ip) {
-        log.info("Received request for IP: {}", ip);
-        return geoService.getLocation(ip);
+    public GeoController(GeoQueryUseCase geoUseCase) {
+        this.geoUseCase = geoUseCase;
+    }
+
+    @GetMapping("/ip/{ip}")
+    public ResponseEntity<GeoLocationResponse> getByIp(@PathVariable String ip) {
+        var result = GeoLocationResponse.from(geoUseCase.findByIp(ip));
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/city/{city}")
+    public ResponseEntity<GeoLocationResponse> getByCity(@PathVariable String city) {
+        var result = GeoLocationResponse.from(geoUseCase.findByCity(city));
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/coordinates")
+    public ResponseEntity<GeoLocationResponse> getByCoordinates(
+            @RequestParam double lat,
+            @RequestParam double lon
+    ) {
+        var result = GeoLocationResponse.from(geoUseCase.findByCoordinates(lat, lon));
+        return ResponseEntity.ok(result);
     }
 }

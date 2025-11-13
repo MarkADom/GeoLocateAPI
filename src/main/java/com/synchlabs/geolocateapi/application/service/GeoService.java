@@ -1,64 +1,35 @@
 package com.synchlabs.geolocateapi.application.service;
 
 import com.synchlabs.geolocateapi.application.dto.GeoLocationResponse;
-import lombok.extern.slf4j.Slf4j;
+import com.synchlabs.geolocateapi.application.port.in.GeoQueryUseCase;
+import com.synchlabs.geolocateapi.application.port.out.GeoProviderPort;
+import com.synchlabs.geolocateapi.domain.model.GeoLocationData;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 
 @Service
-@Slf4j
-public class GeoService {
+public class GeoService implements GeoQueryUseCase {
 
-    private final RestClient restClient;
+    private final GeoProviderPort geoProviderPort;
 
-    @Value("${external.geo.base-url}")
-    private String baseUrl;
-
-    public GeoService() {
-        this.restClient = RestClient.create();
+    public GeoService(GeoProviderPort geoProviderPort) {
+        this.geoProviderPort = geoProviderPort;
     }
 
-    public GeoLocationResponse getLocation(String ip) {
-        String url = String.format("%s/%s/json", baseUrl, ip);
-        log.info("Fetching location for IP: {}", ip);
-
-        try {
-            var response = restClient.get()
-                    .uri(url)
-                    .retrieve()
-                    .body(IpApiResponse.class);
-
-            if (response == null) {
-                throw new IllegalStateException("Empty response from external API");
-            }
-
-            return GeoLocationResponse.builder()
-                    .ip(ip)
-                    .city(response.city())
-                    .region(response.region())
-                    .country(response.country_name())
-                    .latitude(response.latitude())
-                    .longitude(response.longitude())
-                    .timezone(response.timezone())
-                    .org(response.org())
-                    .cached(false)
-                    .build();
-
-        } catch (RestClientException e) {
-            log.error("Error calling external API: {}", e.getMessage());
-            throw new RuntimeException("External API error", e);
-        }
+    @Override
+    public GeoLocationData findByCoordinates(double lat, double lon)   {
+        return geoProviderPort.findByCoordinates(lat, lon);
     }
 
-    private record IpApiResponse(
-            String city,
-            String region,
-            String country_name,
-            double latitude,
-            double longitude,
-            String timezone,
-            String org
-    ) {}
+    @Override
+    public GeoLocationData findByCity(String city) {
+        return geoProviderPort.findByCity(city);
+    }
+
+    @Override
+    public GeoLocationData findByIp(String ip) {
+        return geoProviderPort.findByIp(ip);
+    }
 }

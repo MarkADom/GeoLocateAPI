@@ -1,5 +1,6 @@
 package com.synchlabs.geolocateapi.application.dto;
 
+import com.synchlabs.geolocateapi.domain.model.GeoLocationData;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,4 +16,18 @@ public class GeoLocationResponse {
     private String timezone;
     private String org;
     private boolean cached;
+
+    public static GeoLocationResponse from(GeoLocationData data) {
+        return GeoLocationResponse.builder()
+                .ip(data.ip())
+                .city(data.city())
+                .region(data.region())
+                .country(data.country())
+                .latitude(data.latitude())
+                .longitude(data.longitude())
+                .timezone(data.timezone())
+                .org(data.org())
+                .cached(false) // future: implement Redis caching
+                .build();
+    }
 }
