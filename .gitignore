@@ -14,12 +14,12 @@ logs/
 *.pid
 *.pid.lock
 
-# Configurações locais e segredos
+# Local configurations and secrets
 .env
 .env.*
+.envrc
 application-local.yml
 application-dev.yml
-application-test.yml
 
 ### IntelliJ IDEA ###
 .idea/

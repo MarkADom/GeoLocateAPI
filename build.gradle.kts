@@ -34,9 +34,15 @@ dependencies {
     implementation ("org.springframework:spring-webflux")
 
     // Utils & Dev
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+    // Lombok
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+    // Redis
+    implementation ("org.springframework.boot:spring-boot-starter-cache")
+    implementation ("org.springframework.boot:spring-boot-starter-data-redis")
 
     // Swagger / OpenAPI
     implementation("io.swagger.core.v3:swagger-annotations-jakarta:2.2.21")
