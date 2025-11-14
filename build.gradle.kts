@@ -36,9 +36,8 @@ dependencies {
     // Utils & Dev
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
-    // Apache HttpClient 5
+    // Apache HttpClient
     implementation ("org.apache.httpcomponents.client5:httpclient5")
-
 
     // Lombok
     compileOnly("org.projectlombok:lombok")
@@ -51,6 +50,12 @@ dependencies {
     // Tests
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    // WireMock
+    testImplementation ("org.springframework.boot:spring-boot-starter-test")
+    testImplementation ("org.wiremock:wiremock-standalone:3.3.1")
+
+
 }
 
 tasks.withType<Test> {

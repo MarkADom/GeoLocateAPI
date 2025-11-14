@@ -19,15 +19,20 @@ public class CitySearchClient {
     @Value("${external.providers.open-meteo.search-url}")
     private String searchUrl;
 
-    public CitySearchClient(RestTemplate restTemplate) {
+    public CitySearchClient(
+            RestTemplate restTemplate,
+            @Value("${external.providers.open-meteo.search-url}")
+            String searchUrl
+    ) {
         this.restTemplate = restTemplate;
+        this.searchUrl = searchUrl;
     }
 
     public GeoLocationData findByCity(String city) {
 
         String url = UriComponentsBuilder.fromHttpUrl(searchUrl)
                 .queryParam("name", city)
-                .queryParam("count", 5)       // para melhor match
+                .queryParam("count", 5)
                 .queryParam("format", "json")
                 .toUriString();
 
@@ -51,14 +56,15 @@ public class CitySearchClient {
             );
 
             response = result.getBody();
+
         } catch (Exception ex) {
-            log.error("HTTP error calling Open-Meteo for '{}': {}", city, ex.getMessage());
-            throw new ExternalServiceException("City search provider failed: " + city);
+            log.error("HTTP error calling Open-Meteo for '{}': {}", city, ex.getMessage(), ex);
+            throw new ExternalServiceException("City search provider failed for city: " + city, ex);
         }
 
         if (response == null || response.getResults() == null || response.getResults().isEmpty()) {
-            log.warn("City '{}' not found in Open-Meteo", city);
-            throw new ExternalServiceException("City not found: " + city);
+            log.warn("No results for '{}' in Open-Meteo", city);
+            throw new ExternalServiceException( "No results returned by Open-Meteo for city: " + city);
         }
 
         // Choose best match (exact match if possible)

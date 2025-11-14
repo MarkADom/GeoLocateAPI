@@ -18,11 +18,16 @@ public class IpGeoClient {
 
     private final RestTemplate restTemplate;
 
-    @Value("${external.providers.ip-api.url}")
+
     private String ipApiUrl;
 
-    public IpGeoClient(RestTemplate restTemplate) {
+    public IpGeoClient(
+            RestTemplate restTemplate,
+            @Value("${external.providers.ip-api.url}")
+            String ipApiUrl
+    ) {
         this.restTemplate = restTemplate;
+        this.ipApiUrl = ipApiUrl;
     }
 
     public GeoLocationData findByIp(String ip) {
@@ -51,17 +56,22 @@ public class IpGeoClient {
             response = result.getBody();
 
         } catch (Exception ex) {
-            log.error("HTTP error calling ip-api for {}: {}", ip, ex.getMessage());
-            throw new ExternalServiceException("Failed to fetch geolocation for IP: " + ip);
+            log.error("HTTP error calling ip-api for {}: {}", ip, ex.getMessage(), ex);
+            throw new ExternalServiceException("" +
+                    "Failed to fetch geolocation for IP: " + ip,
+                    ex
+            );
         }
 
         long duration = System.currentTimeMillis() - start;
         log.info("ip-api responded in {} ms for {}", duration, ip);
 
-        // Validate response structure
+        // Validate response
         if (response == null) {
             log.error("ip-api returned NULL body for {}", ip);
-            throw new ExternalServiceException("Null response from ip-api");
+            throw new ExternalServiceException("" +
+                    "Null response body from ip-api for IP: " + ip
+            );
         }
 
         if (!"success".equalsIgnoreCase(response.getStatus())) {
@@ -70,7 +80,12 @@ public class IpGeoClient {
                     ip,
                     response.getCity()
             );
-            throw new ExternalServiceException("ip-api returned status=" + response.getStatus());
+            throw new ExternalServiceException(
+                    "ip-api returned  invalid status=" +
+                            response.getStatus() +
+                            "' for IP: " +
+                            ip
+            );
         }
 
         return new GeoLocationData(

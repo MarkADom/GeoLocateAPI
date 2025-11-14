@@ -19,8 +19,13 @@ public class ReverseGeoClient {
     @Value("${external.providers.nominatim.reverse-url}")
     private String reverseUrl;
 
-    public ReverseGeoClient(RestTemplate restTemplate) {
+    public ReverseGeoClient(
+            RestTemplate restTemplate,
+            @Value("${external.providers.nominatim.reverse-url}")
+            String reverseUrl
+    ) {
         this.restTemplate = restTemplate;
+        this.reverseUrl = reverseUrl;
     }
 
     public GeoLocationData findByCoordinates(double lat, double lon) {
@@ -36,12 +41,10 @@ public class ReverseGeoClient {
                 .toUriString();
 
         log.info("Calling Nominatim reverse provider for {}, {}", lat, lon);
-        log.debug("Reverse Geo URL: {}", url);
 
         ReverseGeoResponse response;
 
         try {
-
             HttpHeaders headers = new HttpHeaders();
             headers.set("User-Agent", "GeoLocateAPI/1.0");
             headers.set("Accept", "application/json");
@@ -57,17 +60,25 @@ public class ReverseGeoClient {
 
             response = result.getBody();
 
-        } catch (Exception e) {
-            log.error("Reverse provider HTTP failure for {}, {}: {}", lat, lon, e.getMessage());
-            throw new ExternalServiceException("Failed to call reverse geocoding provider");
+        } catch (Exception ex) {
+            log.error("HTTP error calling Nominatim for {}, {}: {}",
+                    lat, lon, ex.getMessage(), ex);
+            throw new ExternalServiceException(
+                    "Failed to call reverse geocoding provider (Nominatim) for coordinates: " +
+                            lat + ", " + lon,
+                    ex
+            );
         }
 
         long duration = System.currentTimeMillis() - start;
-        log.info("Nominatim responded in {} ms", duration);
+        log.info("Nominatim responded in {} ms for {}, {}", duration, lat, lon);
 
         if (response == null || response.getAddress() == null) {
-            log.error("Invalid response from Nominatim for {}, {}", lat, lon);
-            throw new ExternalServiceException("Reverse geocoding returned no address");
+            log.error("Nominatim returned null/invalid address for {}, {}", lat, lon);
+            throw new ExternalServiceException(
+                    "Nominatim returned no valid address for: " +
+                            lat + ", " + lon
+            );
         }
 
         var addr = response.getAddress();
@@ -91,7 +102,7 @@ public class ReverseGeoClient {
         try {
             return value == null ? 0.0 : Double.parseDouble(value);
         } catch (Exception ex) {
-            log.warn("Invalid double '{}'", value);
+            log.warn("Invalid numeric value '{}' from provider", value, ex);
             return 0.0;
         }
     }
