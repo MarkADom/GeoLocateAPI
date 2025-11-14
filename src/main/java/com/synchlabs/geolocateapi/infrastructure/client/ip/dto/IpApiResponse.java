@@ -1,4 +1,4 @@
-package com.synchlabs.geolocateapi.infrastructure.client.dto;
+package com.synchlabs.geolocateapi.infrastructure.client.ip.dto;
 
 import lombok.Data;
 

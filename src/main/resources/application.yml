@@ -23,7 +23,14 @@ logging:
     console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr([%thread]){magenta} %clr(%-5level){%highlight} %clr(%logger{36}){cyan} - %clr(%msg){faint}%n"
 
 external:
-  geo:
-    provider: ipapi
-    base-url: http://ip-api.com
-    timeout-ms: 3000
+  providers:
+    ip-api:
+      url: http://ip-api.com/json
+
+    nominatim:
+      reverse-url: https://nominatim.openstreetmap.org/reverse
+
+    open-meteo:
+      search-url: https://geocoding-api.open-meteo.com/v1/search
+
+  timeout-ms: 3000
