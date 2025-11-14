@@ -36,13 +36,13 @@ dependencies {
     // Utils & Dev
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
+    // Apache HttpClient 5
+    implementation ("org.apache.httpcomponents.client5:httpclient5")
+
+
     // Lombok
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
-
-    // Redis
-    implementation ("org.springframework.boot:spring-boot-starter-cache")
-    implementation ("org.springframework.boot:spring-boot-starter-data-redis")
 
     // Swagger / OpenAPI
     implementation("io.swagger.core.v3:swagger-annotations-jakarta:2.2.21")

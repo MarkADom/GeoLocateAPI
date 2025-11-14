@@ -3,6 +3,7 @@ package com.synchlabs.geolocateapi.presentation.controller;
 import com.synchlabs.geolocateapi.application.dto.GeoLocationResponse;
 import com.synchlabs.geolocateapi.application.port.in.GeoQueryUseCase;
 import com.synchlabs.geolocateapi.presentation.validation.ValidIp;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;

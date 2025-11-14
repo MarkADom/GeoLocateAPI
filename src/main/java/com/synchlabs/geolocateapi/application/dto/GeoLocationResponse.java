@@ -27,7 +27,7 @@ public class GeoLocationResponse {
                 .longitude(data.longitude())
                 .timezone(data.timezone())
                 .org(data.org())
-                .cached(false) // future: implement Redis caching
+                .cached(false) // future: implement caching
                 .build();
     }
 }

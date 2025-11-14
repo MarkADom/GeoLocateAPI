@@ -5,6 +5,10 @@ import com.synchlabs.geolocateapi.domain.model.GeoLocationData;
 import com.synchlabs.geolocateapi.infrastructure.client.ip.dto.IpApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,23 +30,47 @@ public class IpGeoClient {
         long start = System.currentTimeMillis();
         String url = ipApiUrl + "/" + ip;
 
-        log.info("Calling IP provider for {}", ip);
+        log.info("Calling IP provider [ip-api] for {}", ip);
 
         IpApiResponse response;
 
         try {
-            response = restTemplate.getForObject(url, IpApiResponse.class);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set(HttpHeaders.USER_AGENT, "GeoLocateAPI/1.0");
+            headers.set(HttpHeaders.ACCEPT, "application/json");
+
+            HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+            ResponseEntity<IpApiResponse> result = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    entity,
+                    IpApiResponse.class
+            );
+
+            response = result.getBody();
+
         } catch (Exception ex) {
-            log.error("IP provider failed for {}: {}", ip, ex.getMessage());
+            log.error("HTTP error calling ip-api for {}: {}", ip, ex.getMessage());
             throw new ExternalServiceException("Failed to fetch geolocation for IP: " + ip);
         }
 
         long duration = System.currentTimeMillis() - start;
-        log.info("IP provider responded in {} ms for {}", duration, ip);
+        log.info("ip-api responded in {} ms for {}", duration, ip);
 
-        if (response == null || !"success".equalsIgnoreCase(response.getStatus())) {
-            log.error("Invalid provider response for {}", ip);
-            throw new ExternalServiceException("Failed to fetch geolocation for IP: " + ip);
+        // Validate response structure
+        if (response == null) {
+            log.error("ip-api returned NULL body for {}", ip);
+            throw new ExternalServiceException("Null response from ip-api");
+        }
+
+        if (!"success".equalsIgnoreCase(response.getStatus())) {
+            log.error("ip-api returned non-success status='{}' for {} (city={})",
+                    response.getStatus(),
+                    ip,
+                    response.getCity()
+            );
+            throw new ExternalServiceException("ip-api returned status=" + response.getStatus());
         }
 
         return new GeoLocationData(
