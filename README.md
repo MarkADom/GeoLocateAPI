@@ -41,7 +41,7 @@ The project is intentionally **stateless, lightweight and easy to integrate**, s
 
 # Endpoints
 
-## ▶ Search by IP  
+## Search by IP  
 ```
 GET /api/v1/geo/ip/{ip}
 ```
@@ -51,7 +51,7 @@ Example:
 curl http://localhost:8080/api/v1/geo/ip/8.8.8.8
 ```
 
-## ▶ Reverse Geocoding  
+## Reverse Geocoding  
 ```
 GET /api/v1/geo/coordinates?lat=40.0&lon=-8.0
 ```
@@ -61,7 +61,7 @@ Example:
 curl http://localhost:8080/api/v1/geo/coordinates?lat=40.0&lon=-8.0
 ```
 
-## ▶ Search by City Name
+## Search by City Name
 ```
 GET /api/v1/geo/city/{name}
 ```
@@ -139,7 +139,13 @@ This service was originally built as part of my **backend engineering portfolio*
 
 ---
 
+## License
+This project is distributed under the MIT License.  
+See the `LICENSE` file for details.
+
+---
 # Author
 
 Developed by **Marco Domingues**.
 Focused on clean, testable backend services that are easy to understand, extend and deploy.
+
