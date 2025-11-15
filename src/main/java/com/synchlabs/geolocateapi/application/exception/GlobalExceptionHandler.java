@@ -34,9 +34,9 @@ public class GlobalExceptionHandler {
                 request.getMethod(), request.getRequestURI(), ex.getMessage(), ex);
 
         return ResponseEntity
-                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .status(HttpStatus.BAD_GATEWAY)
                 .body(buildError(
-                        HttpStatus.SERVICE_UNAVAILABLE,
+                        HttpStatus.BAD_GATEWAY,
                         ex.getMessage(),
                         request)
                 );
