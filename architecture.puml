@@ -1,0 +1,81 @@
+@startuml GeoLocateAPI_Architecture
+
+title <b>GeoLocateAPI – Clean + Hexagonal Architecture (2025)</b>
+
+skinparam backgroundColor #FFFFFF
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam roundcorner 15
+
+skinparam rectangle {
+  FontSize 14
+  FontColor #333333
+}
+
+'--- Layer Colors ---
+!define LAYER_PRESENTATION #E3F2FD
+!define LAYER_APPLICATION  #E8F5E9
+!define LAYER_DOMAIN       #FFF8E1
+!define LAYER_INFRA        #F3E5F5
+
+'--- Infra sub-sections ---
+!define LAYER_CLIENTS      #FCE4EC
+!define LAYER_MAPPERS      #FFF3E0
+!define LAYER_CONFIG       #EDE7F6
+
+rectangle "<b>Presentation Layer</b>\nControllers, Validation, Error Handling" LAYER_PRESENTATION {
+    component GeoController
+    component GlobalExceptionHandler
+}
+
+rectangle "<b>Application Layer</b>\nUse Cases, Orchestration" LAYER_APPLICATION {
+    component GeoQueryUseCase
+    component GeoService
+}
+
+rectangle "<b>Domain Layer</b>\nEntities & Value Objects" LAYER_DOMAIN {
+    component GeoLocationData
+}
+
+rectangle "<b>Infrastructure Layer</b>" LAYER_INFRA {
+
+    rectangle "<b>Clients</b>\nExternal Providers" LAYER_CLIENTS {
+        component IpGeoClient
+        component CitySearchClient
+        component ReverseGeoClient
+    }
+
+    rectangle "<b>DTO Mapping</b>\nExternal → Internal" LAYER_MAPPERS {
+        component IpApiResponse
+        component SearchGeoResponse
+        component ReverseGeoResponse
+    }
+
+    rectangle "<b>Configuration</b>\nBeans, Timeouts, RestTemplate" LAYER_CONFIG {
+        component AppConfig
+    }
+}
+
+'--- Flow ---
+[HTTP Request] --> GeoController : GET /ip/{ip}\nGET /city/{city}\nGET /coords
+GeoController --> GeoQueryUseCase : validate + forward request
+GeoQueryUseCase --> GeoService : execute() use-case
+GeoService --> IpGeoClient : call IP provider
+GeoService --> CitySearchClient : call city provider
+GeoService --> ReverseGeoClient : call reverse provider
+
+IpGeoClient --> IpApiResponse : external JSON
+CitySearchClient --> SearchGeoResponse
+ReverseGeoClient --> ReverseGeoResponse
+
+IpApiResponse --> GeoLocationData : map to domain
+SearchGeoResponse --> GeoLocationData
+ReverseGeoResponse --> GeoLocationData
+
+GeoService --> GeoQueryUseCase : return domain model
+GeoQueryUseCase --> GeoController : transform output
+GeoController --> [HTTP Response] : JSON Response
+
+GlobalExceptionHandler -[dashed]-> GeoController : handles exceptions
+
+@enduml
