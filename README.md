@@ -139,11 +139,35 @@ This service was originally built as part of my **backend engineering portfolio*
 
 ---
 
+## Releases
+
+GeoLocateAPI follows a simple and clean release flow:
+
+- **main** → stable, production-ready versions
+- **develop** → upcoming improvements and planned features
+
+### Latest Release
+**v1.0.0 — Initial Stable Release**
+
+Includes:
+- Core geolocation features (IP lookup, reverse geocoding, city search)
+- Clean Architecture + Hexagonal structure
+- Swagger/OpenAPI documentation
+- WireMock + MockMvc test suite
+- Architecture diagrams (PlantUML + SVG)
+- MIT License
+
+👉 View all releases:  
+https://github.com/your-user/GeoLocateAPI/releases
+
+---
+
 ## License
 This project is distributed under the MIT License.  
 See the `LICENSE` file for details.
 
 ---
+
 # Author
 
 Developed by **Marco Domingues**.
