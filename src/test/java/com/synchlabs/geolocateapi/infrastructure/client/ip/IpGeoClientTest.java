@@ -3,15 +3,26 @@ package com.synchlabs.geolocateapi.infrastructure.client.ip;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.synchlabs.geolocateapi.application.exception.ExternalServiceException;
 import com.synchlabs.geolocateapi.domain.model.GeoLocationData;
+import com.synchlabs.geolocateapi.infrastructure.client.ip.dto.IpApiResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
-
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Integration test for the {@link IpGeoClient}.
+ *
+ * Uses WireMock to simulate responses from the ip-api.com external provider.
+ * Verifies:
+ * - correct HTTP request formatting
+ * - correct parsing of provider JSON into {@link IpApiResponse}
+ * - handling of provider-level errors
+ *
+ * Type: Integration Test with WireMock.
+ */
 class IpGeoClientTest {
 
     private WireMockServer wireMock;

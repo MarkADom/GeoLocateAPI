@@ -9,6 +9,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * Spring Boot configuration class.
+ *
+ * Provides shared application-level beans such as:
+ * - RestTemplate instance for HTTP communication
+ * - Timeout and connection settings
+ *
+ * This class contains framework-specific configuration
+ * and must remain isolated from domain and application logic.
+ */
 @Configuration
 public class AppConfig {
 

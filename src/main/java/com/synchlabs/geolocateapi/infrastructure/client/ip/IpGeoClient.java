@@ -1,6 +1,7 @@
 package com.synchlabs.geolocateapi.infrastructure.client.ip;
 
 import com.synchlabs.geolocateapi.application.exception.ExternalServiceException;
+import com.synchlabs.geolocateapi.application.port.out.GeoProviderPort;
 import com.synchlabs.geolocateapi.domain.model.GeoLocationData;
 import com.synchlabs.geolocateapi.infrastructure.client.ip.dto.IpApiResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * Infrastructure adapter for IP-based geolocation lookups.
+ *
+ * Calls the external ip-api.com service and converts the raw HTTP response
+ * into the provider-specific DTO {@link IpApiResponse}.
+ *
+ * Responsibilities:
+ * - Perform HTTP requests to the external provider.
+ * - Handle provider-specific error formats.
+ * - Map provider output into the domain model {@link GeoLocationData}.
+ *
+ * This class must contain *only* provider-specific logic and no domain rules.
+ */
 @Slf4j
 @Component
 public class IpGeoClient {

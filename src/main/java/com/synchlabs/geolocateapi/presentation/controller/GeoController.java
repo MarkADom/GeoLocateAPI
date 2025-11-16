@@ -3,11 +3,21 @@ package com.synchlabs.geolocateapi.presentation.controller;
 import com.synchlabs.geolocateapi.application.dto.GeoLocationResponse;
 import com.synchlabs.geolocateapi.application.port.in.GeoQueryUseCase;
 import com.synchlabs.geolocateapi.presentation.validation.ValidIp;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.annotation.Validated;
 
+/**
+ * REST controller exposing geolocation endpoints (IP lookup, reverse geocoding and city search).
+ *
+ * Responsibilities:
+ * - Handle HTTP requests and map them to application-level inputs.
+ * - Validate incoming data before delegating to {@link GeoQueryUseCase}.
+ * - Convert domain/application responses into presentation-layer DTOs.
+ *
+ * This class contains no business or provider logic.
+ * It strictly handles transport concerns (HTTP, routing, serialization).
+ */
 @Validated
 @RestController
 @RequestMapping("/api/v1/geo")

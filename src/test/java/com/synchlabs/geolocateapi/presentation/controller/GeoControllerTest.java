@@ -9,11 +9,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * MockMvc-based test for {@link GeoController}.
+ *
+ * Validates:
+ * - request routing and HTTP endpoints
+ * - input validation behavior
+ * - correct HTTP response formatting
+ * - error handling at the presentation layer
+ *
+ * The application layer is mocked to isolate controller logic.
+ *
+ * Type: Controller Test (MockMvc).
+ */
 @WebMvcTest(controllers = GeoController.class)
 class GeoControllerTest {
 
