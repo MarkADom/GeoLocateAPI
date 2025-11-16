@@ -7,10 +7,20 @@ import com.synchlabs.geolocateapi.infrastructure.client.reverse.ReverseGeoClient
 import com.synchlabs.geolocateapi.infrastructure.client.search.CitySearchClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit test for the {@link GeoProviderCompositeAdapter}.
+ *
+ * Verifies that the composite adapter correctly delegates to the
+ * appropriate provider clients and maps provider DTOs into domain
+ * {@link GeoLocationData} objects.
+ *
+ * External calls are mocked to ensure isolation from network and provider logic.
+ *
+ * Type: Unit Test (Mocked Provider Clients).
+ */
 class GeoProviderCompositeAdapterTest {
 
     private IpGeoClient ipClient;

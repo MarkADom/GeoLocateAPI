@@ -3,15 +3,25 @@ package com.synchlabs.geolocateapi.infrastructure.client.search;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.synchlabs.geolocateapi.application.exception.ExternalServiceException;
 import com.synchlabs.geolocateapi.domain.model.GeoLocationData;
+import com.synchlabs.geolocateapi.infrastructure.client.search.dto.SearchGeoResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
-
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Integration test for {@link CitySearchClient}.
+ *
+ * Mocks responses from the Open-Meteo Geocoding API to validate:
+ * - request construction
+ * - deserialization into {@link SearchGeoResponse}
+ * - correct handling of unexpected or partial provider data
+ *
+ * Type: Integration Test with WireMock.
+ */
 class CitySearchClientTest {
 
     private WireMockServer wireMock;

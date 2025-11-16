@@ -14,17 +14,6 @@ spring:
     ansi:
       enabled: always
 
-  redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
-    username: ${REDIS_USERNAME}
-    password: ${REDIS_PASSWORD}
-    ssl: true
-
-cache:
-  redis:
-    ttl-seconds: 86400
-
 logging:
   level:
     root: INFO

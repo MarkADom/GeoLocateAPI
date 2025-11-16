@@ -7,6 +7,21 @@ import com.synchlabs.geolocateapi.infrastructure.client.reverse.ReverseGeoClient
 import com.synchlabs.geolocateapi.infrastructure.client.search.CitySearchClient;
 import org.springframework.stereotype.Component;
 
+/**
+ * Composite adapter implementing {@link GeoProviderPort} by delegating
+ * geolocation operations to specific provider clients.
+ *
+ * This adapter acts as the bridge between the application layer and
+ * the different external provider adapters.
+ *
+ * Responsibilities:
+ * - Coordinate IP, reverse geocoding and city-search providers.
+ * - Map external DTOs into the domain {@link GeoLocationData}.
+ * - Encapsulate all provider-specific logic behind the hexagonal port.
+ *
+ * This class ensures that adding or replacing providers does not
+ * affect the application or domain layers.
+ */
 @Component
 public class GeoProviderCompositeAdapter implements GeoProviderPort {
 

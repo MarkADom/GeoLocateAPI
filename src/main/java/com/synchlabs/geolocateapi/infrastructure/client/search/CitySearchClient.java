@@ -10,6 +10,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+/**
+ * Infrastructure adapter for city name search operations.
+ *
+ * Calls the Open-Meteo Geocoding API to retrieve coordinates and location
+ * metadata based on a city name query.
+ *
+ * Responsibilities:
+ * - HTTP interaction with the provider
+ * - Mapping provider responses to {@link SearchGeoResponse}
+ * - Escaping all provider-specific data models from upper layers
+ */
 @Slf4j
 @Component
 public class CitySearchClient {

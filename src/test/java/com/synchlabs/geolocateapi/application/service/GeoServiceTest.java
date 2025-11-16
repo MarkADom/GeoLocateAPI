@@ -6,10 +6,19 @@ import com.synchlabs.geolocateapi.application.port.out.GeoProviderPort;
 import com.synchlabs.geolocateapi.domain.model.GeoLocationData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit test for the {@link GeoService}.
+ *
+ * Ensures correct orchestration of application-level logic and that the service:
+ * - delegates to the {@link GeoProviderPort}
+ * - maps provider data into domain models
+ * - propagates expected exceptions
+ *
+ * Type: Pure Unit Test (Mocked Port).
+ */
 class GeoServiceTest {
 
     private GeoProviderPort provider;

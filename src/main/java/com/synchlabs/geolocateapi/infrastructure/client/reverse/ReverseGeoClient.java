@@ -10,6 +10,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+/**
+ * Infrastructure adapter for reverse geocoding operations (lat/lon → city).
+ *
+ * Communicates with the OpenStreetMap Nominatim service and parses
+ * its response into {@link ReverseGeoResponse}.
+ *
+ * This adapter isolates provider-specific HTTP communication and ensures
+ * that no external API details affect the rest of the system.
+ */
 @Slf4j
 @Component
 public class ReverseGeoClient {

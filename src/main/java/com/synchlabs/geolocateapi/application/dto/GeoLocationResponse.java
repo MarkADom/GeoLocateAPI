@@ -4,6 +4,13 @@ import com.synchlabs.geolocateapi.domain.model.GeoLocationData;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * DTO returned by the application layer to the presentation layer.
+ *
+ * Represents a clean API-friendly structure for geolocation data.
+ * This model intentionally differs from provider DTOs and the pure domain model,
+ * acting as a boundary object toward external clients.
+ */
 @Data
 @Builder
 public class GeoLocationResponse {

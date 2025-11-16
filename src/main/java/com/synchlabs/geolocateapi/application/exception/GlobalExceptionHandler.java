@@ -8,9 +8,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import java.time.LocalDateTime;
 
+/**
+ * Centralized exception handler for the entire application.
+ *
+ * Converts internal exceptions into consistent HTTP error responses.
+ * Ensures that domain and application errors never leak internal details
+ * and that all failures follow the same JSON structure.
+ *
+ *  Logically belongs to the presentation layer (HTTP boundary),
+ *  even though it is packaged alongside application exceptions.
+ */
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {

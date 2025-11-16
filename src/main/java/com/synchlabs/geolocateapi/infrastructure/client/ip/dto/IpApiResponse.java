@@ -3,6 +3,14 @@ package com.synchlabs.geolocateapi.infrastructure.client.ip.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+/**
+ * DTO representing the JSON structure returned by ip-api.com.
+ *
+ * This model reflects the provider's response format exactly and
+ * must not leak into the domain or presentation layers.
+ *
+ * Only infrastructure adapters should use this class.
+ */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class IpApiResponse {
