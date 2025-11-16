@@ -133,12 +133,6 @@ Once the app is running:
 
 ---
 
-# About This Project
-
-This service was originally built as part of my **backend engineering portfolio**, focusing on clean architecture, external API integration, structured testing and maintainability.
-
----
-
 ## Releases
 
 GeoLocateAPI follows a simple and clean release flow:
@@ -162,9 +156,16 @@ https://github.com/your-user/GeoLocateAPI/releases
 
 ---
 
-## License
-This project is distributed under the MIT License.  
-See the `LICENSE` file for details.
+## Roadmap
+
+The core of GeoLocateAPI is complete.
+Contributions are welcome.
+
+---
+
+# About This Project
+
+This service was originally built as part of my **backend engineering portfolio**, focusing on clean architecture, external API integration, structured testing and maintainability.
 
 ---
 
@@ -172,4 +173,10 @@ See the `LICENSE` file for details.
 
 Developed by **Marco Domingues**.
 Focused on clean, testable backend services that are easy to understand, extend and deploy.
+
+---
+
+## License
+This project is distributed under the MIT License.  
+See the `LICENSE` file for details.
 
